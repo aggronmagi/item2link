@@ -126,6 +126,12 @@ func parse(cfgFileName string) {
 			log.Println("allConfig:", basic)
 			continue
 		}
+		if _,ok := basic["badge_text"]; !ok {
+			basic["badge_text"] = basic["name"]
+		}
+		if _,ok := basic["tab_text"]; !ok {
+			basic["tab_text"] = basic["name"]
+		}
 		strConfig := string(profileData)
 		for sk, sv := range basic {
 			strConfig = strings.ReplaceAll(strConfig, "$"+sk, sv)
