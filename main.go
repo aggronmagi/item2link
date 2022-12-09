@@ -17,18 +17,13 @@ import (
 )
 
 var pcfg = struct {
-	OutputPath      string
-	TemplateExcepts []string
-	TemplateProfile []string
-	ExportExpect    bool
+	OutputPath string
 }{
 	OutputPath: "~/Library/Application Support/iTerm2/DynamicProfiles",
 }
 
 func init() {
 	pflag.StringVarP(&pcfg.OutputPath, "output", "o", pcfg.OutputPath, "生成文件输出目录")
-	pflag.StringSliceVarP(&pcfg.TemplateExcepts, "expect", "e", pcfg.TemplateExcepts, "expect模板文件目录")
-	pflag.StringSliceVarP(&pcfg.TemplateProfile, "profile", "p", pcfg.TemplateProfile, "profile模板文件目录")
 }
 
 type buildConfig struct {
@@ -88,24 +83,9 @@ func parse(cfgFileName string) {
 	var profileData []byte
 	if strings.HasPrefix(profileName, "~") {
 		profileName = strings.Replace(profileName, "~", os.Getenv("HOME"), 1)
-		profileData, err = ioutil.ReadFile(profileName)
-		if err != nil {
-			log.Println("warn: read ", profileName, " failed.", err)
-		}
-	} else {
-		for _, dir := range pcfg.TemplateProfile {
-			if IsDir(dir) {
-				profileData, err = ioutil.ReadFile(filepath.Join(dir, profileName))
-				if err != nil {
-					log.Println("warn: read ", profileName, " from ", dir, " failed.", err)
-					continue
-				}
-				break
-			}
-		}
 	}
-
-	if profileData == nil {
+	profileData, err = ioutil.ReadFile(profileName)
+	if err != nil {
 		profileData, err = profileDir.ReadFile(filepath.Join("profiles", profileName))
 		if err != nil {
 			log.Println("warn: read ", profileName, " from embed files failed.", err)
