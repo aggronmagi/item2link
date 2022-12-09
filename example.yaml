@@ -5,5 +5,5 @@ services:
   -
     name: example
     command: expect ~/.config/expect/ssh.expect 192.168.88.83 root 22 123456
-    badge_text: example
-    tab_text: example
+    badge_text: example # 与name 相同,可以不配置
+    tab_text: example # 与name 相同,可以不配置

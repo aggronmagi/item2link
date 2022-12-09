@@ -84,6 +84,9 @@ func parse(cfgFileName string) {
 	if !pset {
 		profileName = "ssh.json"
 	}
+	if strings.HasPrefix(profileName, "~") {
+		profileName = strings.Replace(profileName, "~", os.Getenv("HOME"), 1)
+	}
 
 	var profileData []byte
 
@@ -126,10 +129,10 @@ func parse(cfgFileName string) {
 			log.Println("allConfig:", basic)
 			continue
 		}
-		if _,ok := basic["badge_text"]; !ok {
+		if _, ok := basic["badge_text"]; !ok {
 			basic["badge_text"] = basic["name"]
 		}
-		if _,ok := basic["tab_text"]; !ok {
+		if _, ok := basic["tab_text"]; !ok {
 			basic["tab_text"] = basic["name"]
 		}
 		strConfig := string(profileData)
