@@ -84,22 +84,27 @@ func parse(cfgFileName string) {
 	if !pset {
 		profileName = "ssh.json"
 	}
-	if strings.HasPrefix(profileName, "~") {
-		profileName = strings.Replace(profileName, "~", os.Getenv("HOME"), 1)
-	}
 
 	var profileData []byte
-
-	for _, dir := range pcfg.TemplateProfile {
-		if IsDir(dir) {
-			profileData, err = ioutil.ReadFile(filepath.Join(dir, profileName))
-			if err != nil {
-				log.Println("warn: read ", profileName, " from ", dir, " failed.", err)
-				continue
+	if strings.HasPrefix(profileName, "~") {
+		profileName = strings.Replace(profileName, "~", os.Getenv("HOME"), 1)
+		profileData, err = ioutil.ReadFile(profileName)
+		if err != nil {
+			log.Println("warn: read ", profileName, " failed.", err)
+		}
+	} else {
+		for _, dir := range pcfg.TemplateProfile {
+			if IsDir(dir) {
+				profileData, err = ioutil.ReadFile(filepath.Join(dir, profileName))
+				if err != nil {
+					log.Println("warn: read ", profileName, " from ", dir, " failed.", err)
+					continue
+				}
+				break
 			}
-			break
 		}
 	}
+
 	if profileData == nil {
 		profileData, err = profileDir.ReadFile(filepath.Join("profiles", profileName))
 		if err != nil {
