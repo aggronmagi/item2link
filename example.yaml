@@ -1,0 +1,9 @@
+basic:
+  tag: example
+
+services:
+  -
+    name: example
+    command: expect ~/.config/expect/ssh.expect 192.168.88.83 root 22 123456
+    badge_text: example
+    tab_text: example

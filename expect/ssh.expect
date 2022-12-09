@@ -1,0 +1,21 @@
+#!/usr/bin/expect
+
+set timeout -1
+set send_slow {1 .005}
+
+set ip [lindex $argv 0]
+set user [lindex $argv 1]
+set port [lindex $argv 2]
+set password [lindex $argv 3]
+
+spawn ssh -p ${port} ${user}@${ip}
+
+expect "*assword:*" {send "$password\r"}
+
+expect {
+	">$ " {}
+	"]$ " {}
+	"]# " {}
+}
+
+interact
