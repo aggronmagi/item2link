@@ -15,7 +15,9 @@
     "Disable Window Resizing" : true,
     "Badge Text": "$badge_text",
     "Tab Text": "$tab_text",
-    "Normal Font": "Monaco 14",
+    "Normal Font" : "CommitMonoyuan-Regular 18",
+    "Use Non-ASCII Font" : true,
+    "Non Ascii Font" : "STKaiti 22",
     "Tab Color": {
         "Red Component": 0,
         "Color Space": "Calibrated",
